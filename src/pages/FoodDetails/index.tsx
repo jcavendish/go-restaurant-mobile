@@ -153,6 +153,7 @@ const FoodDetails: React.FC = () => {
   }, [extras, food, foodQuantity]);
 
   async function handleFinishOrder(): Promise<void> {
+    delete food.id;
     await api.post('orders', food);
   }
 

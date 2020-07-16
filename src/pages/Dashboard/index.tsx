@@ -44,11 +44,6 @@ interface Category {
   image_url: string;
 }
 
-interface Params {
-  name_like: string;
-  category_like: string;
-}
-
 const Dashboard: React.FC = () => {
   const [foods, setFoods] = useState<Food[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -79,16 +74,12 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function loadFoods(): Promise<void> {
       try {
-        const params = {} as Params;
-        if (searchValue) {
-          params.name_like = searchValue;
-        }
-
-        if (selectedCategory) {
-          params.category_like = String(selectedCategory);
-        }
-
-        const response = await api.get<Food[]>('foods', { params });
+        const response = await api.get<Food[]>('foods', {
+          params: {
+            name_like: searchValue,
+            category_like: selectedCategory,
+          },
+        });
 
         setFoods(
           response.data.map(food => {
